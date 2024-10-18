@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/FakJeongTeeNhoi/report-system/controller"
+	"github.com/FakJeongTeeNhoi/report-system/router"
+	"github.com/FakJeongTeeNhoi/report-system/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -16,6 +20,7 @@ func main() {
 	fmt.Println("Starting server...")
 
 	// TODO: Connect to database using gorm
+	service.ConnectMongoDB()
 
 	server := gin.Default()
 
@@ -27,8 +32,10 @@ func main() {
 	server.Use(cors.New(corsConfig))
 
 	api := server.Group("/api")
+	go controller.StartConsumeDataFromQueue("Receiver", []string{"topic"})
 
 	// TODO: Add routes here
+	router.ReportRouterGroup(api)
 
 	err = server.Run(":3020")
 	if err != nil {
