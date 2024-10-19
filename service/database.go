@@ -33,6 +33,6 @@ func ConnectMongoDB() {
 		log.Fatal(err)
 	}
 
-	DB = client.Database("ReportSystem")
+	DB = client.Database(os.Getenv("MONGO_DB_NAME"))
 	fmt.Println("Successfully connected to MongoDB")
 }

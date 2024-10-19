@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/FakJeongTeeNhoi/report-service/service"
@@ -59,7 +60,7 @@ func ParseParticipant(raw primitive.A) []Participant {
 }
 
 func GetReportsBySpace(spaceID string) ([]Report, error) {
-	collection := service.DB.Client().Database("ReportSystem").Collection("report")
+	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("report")
 
 	filter := bson.M{"space_id": spaceID}
 	fmt.Println(filter)
@@ -110,7 +111,7 @@ func GetReportsBySpace(spaceID string) ([]Report, error) {
 }
 
 func AddReportFromReserve(reserve Reserve) error {
-	collection := service.DB.Client().Database("ReportSystem").Collection("report")
+	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("report")
 
 	_, err := collection.InsertOne(context.TODO(), bson.M{
 		"id":             uuid.New().String(),
