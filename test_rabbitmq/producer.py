@@ -6,10 +6,11 @@ from datetime import datetime, timedelta
 
 # Create a new report
 report = {
-    "id": uuid.uuid4().bytes.hex(),
-    "reservation_id": uuid.uuid4().bytes.hex(),
-    "room_id": uuid.uuid4().bytes.hex(),
+    "id": str(uuid.uuid4()),  # Convert UUID to string
+    "reservation_id": str(uuid.uuid4()),  # Convert UUID to string
+    "room_id": str(uuid.uuid4()),  # Convert UUID to string
     "space_name": "Conference Room",
+    "space_id" : str(uuid.uuid4()),  # Convert UUID to string
     "status": "Confirmed",
     "start_datetime": datetime.now().astimezone().isoformat(),  # Ensure timezone is included
     "end_datetime": (datetime.now() + timedelta(hours=1)).astimezone().isoformat(),  # Ensure timezone is included

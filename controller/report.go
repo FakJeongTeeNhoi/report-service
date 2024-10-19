@@ -7,9 +7,9 @@ import (
 )
 
 func GetSpaceStatistic(c *gin.Context) {
-	spaceName := c.Param("spaceName")
+	spaceID := c.Param("spaceID")
 
-	reports, err := model.GetReportsBySpace(spaceName)
+	reports, err := model.GetReportsBySpace(spaceID)
 	if err != nil {
 		response.NotFound("No reports found for the specified space").AbortWithError(c)
 		return

@@ -8,6 +8,6 @@ import (
 func ReportRouterGroup(server *gin.RouterGroup) {
 	report := server.Group("/report")
 	{
-		report.GET("/:spaceName", controller.GetSpaceStatistic)
+		report.GET("/:spaceID", controller.GetSpaceStatistic)
 	}
 }
