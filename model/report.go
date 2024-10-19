@@ -41,6 +41,22 @@ type Reserve struct {
 	SpaceName     string        `json:"space_name"`
 }
 
+func (r Report) ArrayOfString() []string {
+	var res []string
+	res = append(
+		res,
+		r.Id,
+		r.ReservationId,
+		r.RoomId,
+		r.SpaceID,
+		r.SpaceName,
+		r.Status,
+		r.StartDatetime.Format("2006-01-02 15:04:05"),
+		r.EndDatetime.Format("2006-01-02 15:04:05"),
+	)
+	return res
+}
+
 func ParseDateTime(raw primitive.DateTime) time.Time {
 	return raw.Time()
 }
