@@ -9,7 +9,7 @@ report = {
     "id": uuid.uuid4().bytes.hex(),
     "reservation_id": uuid.uuid4().bytes.hex(),
     "room_id": uuid.uuid4().bytes.hex(),
-    "space": "Conference Room",
+    "space_name": "Conference Room",
     "status": "Confirmed",
     "start_datetime": datetime.now().astimezone().isoformat(),  # Ensure timezone is included
     "end_datetime": (datetime.now() + timedelta(hours=1)).astimezone().isoformat(),  # Ensure timezone is included
@@ -28,7 +28,7 @@ channel = connection.channel()
 
 channel.exchange_declare(exchange='Receiver', exchange_type='topic', durable=True)
 
-routing_key = "topic"
+routing_key = "reservation.*"
 
 print(f" [x] Sent {routing_key}:{report_json}")
 for i in range(1):

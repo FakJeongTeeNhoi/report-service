@@ -3,8 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"log"
+	"os"
 
-	"github.com/FakJeongTeeNhoi/report-system/model"
+	"github.com/FakJeongTeeNhoi/report-service/model"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -16,7 +17,7 @@ func failOnError(err error, msg string) {
 
 func StartConsumeDataFromQueue(Exchange string, key []string) {
 
-	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
+	conn, err := amqp.Dial(os.Getenv("AMQP_URI"))
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 

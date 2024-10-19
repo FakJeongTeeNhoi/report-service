@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/FakJeongTeeNhoi/report-system/service"
+	"github.com/FakJeongTeeNhoi/report-service/service"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,7 +19,7 @@ type Report struct {
 	Id            uuid.UUID     `json:"id"`
 	ReservationId uuid.UUID     `json:"reservation_id"`
 	RoomId        uuid.UUID     `json:"room_id"`
-	Space         string        `json:"space"`
+	SpaceName     string        `json:"space_name"`
 	Status        string        `json:"status"`
 	StartDatetime time.Time     `json:"start_datetime"`
 	EndDatetime   time.Time     `json:"end_datetime"`
@@ -34,7 +34,7 @@ type Reserve struct {
 	StartDatetime time.Time     `json:"start_datetime"`
 	EndDatetime   time.Time     `json:"end_datetime"`
 	RoomId        uuid.UUID     `json:"room_id"`
-	Space         string        `json:"space"`
+	SpaceName     string        `json:"space_name"`
 }
 
 func ParseUUID(raw primitive.Binary) uuid.UUID {
@@ -64,10 +64,10 @@ func ParseParticipant(raw primitive.A) []Participant {
 	return participants
 }
 
-func GetReportsBySpace(space string) ([]Report, error) {
+func GetReportsBySpace(spaceName string) ([]Report, error) {
 	collection := service.DB.Client().Database("ReportSystem").Collection("report")
 
-	filter := bson.M{"space": space}
+	filter := bson.M{"space_name": spaceName}
 	// Execute the query
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -90,7 +90,7 @@ func GetReportsBySpace(space string) ([]Report, error) {
 		report.RoomId = ParseUUID(raw["room_id"].(primitive.Binary))
 
 		// Map other fields
-		report.Space = raw["space"].(string)
+		report.SpaceName = raw["space_name"].(string)
 		report.Status = raw["status"].(string)
 
 		// Parse time fields
@@ -118,7 +118,7 @@ func AddReportFromReserve(reserve Reserve) error {
 		"id":             uuid.New(),
 		"reservation_id": reserve.Id,
 		"room_id":        reserve.RoomId,
-		"space":          reserve.Space,
+		"space_name":     reserve.SpaceName,
 		"status":         reserve.Status,
 		"start_datetime": reserve.StartDatetime,
 		"end_datetime":   reserve.EndDatetime,

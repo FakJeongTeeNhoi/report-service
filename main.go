@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/FakJeongTeeNhoi/report-system/controller"
-	"github.com/FakJeongTeeNhoi/report-system/router"
-	"github.com/FakJeongTeeNhoi/report-system/service"
+	"github.com/FakJeongTeeNhoi/report-service/controller"
+	"github.com/FakJeongTeeNhoi/report-service/router"
+	"github.com/FakJeongTeeNhoi/report-service/service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -32,7 +32,7 @@ func main() {
 	server.Use(cors.New(corsConfig))
 
 	api := server.Group("/api")
-	go controller.StartConsumeDataFromQueue("Receiver", []string{"topic"})
+	go controller.StartConsumeDataFromQueue("Receiver", []string{"reservation.*"})
 
 	// TODO: Add routes here
 	router.ReportRouterGroup(api)

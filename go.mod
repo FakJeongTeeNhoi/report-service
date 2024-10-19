@@ -1,4 +1,4 @@
-module github.com/FakJeongTeeNhoi/report-system
+module github.com/FakJeongTeeNhoi/report-service
 
 go 1.22
 
