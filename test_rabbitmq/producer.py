@@ -29,7 +29,7 @@ channel = connection.channel()
 
 channel.exchange_declare(exchange='Receiver', exchange_type='topic', durable=True)
 
-routing_key = "reservation.*"
+routing_key = "reservation.created"
 
 print(f" [x] Sent {routing_key}:{report_json}")
 for i in range(1):
