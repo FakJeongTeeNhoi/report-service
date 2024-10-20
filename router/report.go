@@ -9,5 +9,6 @@ func ReportRouterGroup(server *gin.RouterGroup) {
 	report := server.Group("/report")
 	{
 		report.GET("/:spaceID", controller.GetSpaceStatistic)
+		report.GET("/download/:spaceID", controller.DownloadSpaceStatistic)
 	}
 }

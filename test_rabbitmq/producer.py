@@ -9,13 +9,14 @@ report = {
     "id": str(uuid.uuid4()),  # Convert UUID to string
     "reservation_id": str(uuid.uuid4()),  # Convert UUID to string
     "room_id": str(uuid.uuid4()),  # Convert UUID to string
+    "room_name": "Room 1",
     "space_name": "Conference Room",
     "space_id" : str(uuid.uuid4()),  # Convert UUID to string
     "status": "Confirmed",
     "start_datetime": datetime.now().astimezone().isoformat(),  # Ensure timezone is included
     "end_datetime": (datetime.now() + timedelta(hours=1)).astimezone().isoformat(),  # Ensure timezone is included
     "participant": [
-        {"type": "Staff", "faculty": "Engineering"}
+        {"role": "Staff", "faculty": "Engineering"}
     ]
 }
 
