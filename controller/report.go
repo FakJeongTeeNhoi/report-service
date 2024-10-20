@@ -43,6 +43,7 @@ func DownloadSpaceStatistic(c *gin.Context) {
 		"ID",
 		"Reservation ID",
 		"Room ID",
+		"Room Name",
 		"Space ID",
 		"Space Name",
 		"Status",

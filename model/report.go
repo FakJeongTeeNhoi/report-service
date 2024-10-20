@@ -13,7 +13,7 @@ import (
 )
 
 type Participant struct {
-	Type    string `json:"type"`
+	Role    string `json:"role"`
 	Faculty string `json:"faculty"`
 }
 
@@ -21,6 +21,7 @@ type Report struct {
 	Id            string        `json:"id"`
 	ReservationId string        `json:"reservation_id"`
 	RoomId        string        `json:"room_id"`
+	RoomName      string        `json:"room_name"`
 	SpaceID       string        `json:"space_id"`
 	SpaceName     string        `json:"space_name"`
 	Status        string        `json:"status"`
@@ -37,6 +38,7 @@ type Reserve struct {
 	StartDatetime time.Time     `json:"start_datetime"`
 	EndDatetime   time.Time     `json:"end_datetime"`
 	RoomId        string        `json:"room_id"`
+	RoomName      string        `json:"room_name"`
 	SpaceID       string        `json:"space_id"`
 	SpaceName     string        `json:"space_name"`
 }
@@ -48,6 +50,7 @@ func (r Report) ArrayOfString() []string {
 		r.Id,
 		r.ReservationId,
 		r.RoomId,
+		r.RoomName,
 		r.SpaceID,
 		r.SpaceName,
 		r.Status,
@@ -67,7 +70,7 @@ func ParseParticipant(raw primitive.A) []Participant {
 		if participantMap, ok := item.(bson.M); ok {
 			participant := Participant{
 				Faculty: participantMap["faculty"].(string),
-				Type:    participantMap["type"].(string),
+				Role:    participantMap["role"].(string),
 			}
 			participants = append(participants, participant)
 		}
@@ -76,7 +79,7 @@ func ParseParticipant(raw primitive.A) []Participant {
 }
 
 func GetReportsBySpace(spaceID string) ([]Report, error) {
-	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("report")
+	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("reports")
 
 	filter := bson.M{"space_id": spaceID}
 	fmt.Println(filter)
@@ -104,6 +107,7 @@ func GetReportsBySpace(spaceID string) ([]Report, error) {
 		report.RoomId = raw["room_id"].(string)
 
 		// Map other fields
+		report.RoomName = raw["room_name"].(string)
 		report.SpaceID = raw["space_id"].(string)
 		report.SpaceName = raw["space_name"].(string)
 		report.Status = raw["status"].(string)
@@ -127,12 +131,13 @@ func GetReportsBySpace(spaceID string) ([]Report, error) {
 }
 
 func AddReportFromReserve(reserve Reserve) error {
-	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("report")
+	collection := service.DB.Client().Database(os.Getenv("MONGO_DB_NAME")).Collection("reports")
 
 	_, err := collection.InsertOne(context.TODO(), bson.M{
 		"id":             uuid.New().String(),
 		"reservation_id": reserve.Id,
 		"room_id":        reserve.RoomId,
+		"room_name":      reserve.RoomName,
 		"space_id":       reserve.SpaceID,
 		"space_name":     reserve.SpaceName,
 		"status":         reserve.Status,
