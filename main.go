@@ -37,7 +37,7 @@ func main() {
 	// TODO: Add routes here
 	router.ReportRouterGroup(api)
 
-	err = server.Run(":3020")
+	err = server.Run(":3021")
 	if err != nil {
 		panic(err)
 	}
